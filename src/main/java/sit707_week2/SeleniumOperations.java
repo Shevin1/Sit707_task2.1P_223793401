@@ -8,7 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
@@ -119,21 +120,22 @@ public class SeleniumOperations {
 	        driver.get(url);
 
 	        // Find input fields and populate with values
-	        WebElement firstNameElement = driver.findElement(By.id("full-name"));
-	        firstNameElement.sendKeys("Shevin Fernando");
+	        WebElement nameElement = driver.findElement(By.id("ap_customer_name"));
+	        nameElement.sendKeys("Shevin");
 
-	        WebElement emailElement = driver.findElement(By.id("email--1"));
+	        WebElement emailElement = driver.findElement(By.id("ap_email"));
 	        emailElement.sendKeys("example@example.com");
 
-	        WebElement passwordElement = driver.findElement(By.id("password"));
+	        WebElement passwordElement = driver.findElement(By.id("ap_password"));
 	        passwordElement.sendKeys("Password@123");
 
-	        // Identify button 'Sign Up' and click to submit using Selenium API.
-	        WebElement signUpButton = driver.findElement(By.xpath("//button[contains(text(),'Sign Up')]"));
+	        // Identify Sign Up button and click
+	        WebElement signUpButton = driver.findElement(By.id("continue"));
 	        signUpButton.click();
 
+
 	        // Take screenshot using Selenium API.
-	        //takeScreenshot(driver, "udemy_registration_page_screenshot.png");
+	        takeScreenshot(driver, "alternative_registration_page.png");
 
 	        // Sleep a while
 	        sleep(2);
@@ -141,6 +143,64 @@ public class SeleniumOperations {
 	        // Close chrome driver
 	        driver.close();
 	    }
+	 public static void alternative_registration_page2(String url) {
+		 // Step 1: Locate chrome driver folder in the local drive.
+	        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver-win64\\chromedriver.exe");
+
+	        // Step 2: Use above chrome driver to open up a chromium browser.
+	        System.out.println("Fire up chrome browser.");
+	        WebDriver driver = new ChromeDriver();
+
+	        System.out.println("Driver info: " + driver);
+
+	        sleep(2);
+
+	        // Load a webpage in chromium browser.
+	        driver.get(url);
+
+	        WebElement nameElement = driver.findElement(By.id("form-group--1"));
+	        nameElement.sendKeys("Shevin");
+
+	        WebElement emailElement = driver.findElement(By.id("form-group--3"));
+	        emailElement.sendKeys("example@example.com");
+
+	        WebElement passwordElement = driver.findElement(By.id("form-group--5"));
+	        passwordElement.sendKeys("Password@123");
+
+
+
+	        // Wait for Sign Up button to be clickable
+	        WebDriverWait wait = new WebDriverWait(driver, 10);
+	        WebElement signUpButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("submit-id-submit")));
+
+	        // Click the Sign Up button
+	        signUpButton.click();
+
+
+	        // Take screenshot using Selenium API.
+	        takeScreenshot(driver, "alternative_registration_page2.png");
+
+	        // Sleep a while
+	        sleep(2);
+
+	        // Close chrome driver
+	        driver.close();
+	    }
+	 private static void takeScreenshot(WebDriver driver, String filename) {
+		    // Convert WebDriver object to TakeScreenshot
+		    File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+		    // Specify the location where you want to save the screenshot
+		    File destinationFile = new File(filename);
+
+		    // Copy the file to the destination
+		    try {
+		        FileUtils.copyFile(screenshot, destinationFile);
+		        System.out.println("Screenshot saved: " + filename);
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+	 }
 	
 	
 }
